@@ -1,8 +1,9 @@
 #!python
 
-import requests, argparse, json
+import requests, argparse, json, logging
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 class bitColors:
@@ -21,6 +22,13 @@ def printWarning(text2Print ):
     print ("\033[33;1m" + text2Print + "\033[0m")
 def printError(text2Print ):
     print ("\033[31;1m" + text2Print + "\033[0m")
+def returnSuccess(text2Print ):
+    return ("\033[32;1m" + text2Print + "\033[0m")
+def returnWarning(text2Print ):
+    return ("\033[33;1m" + text2Print + "\033[0m")
+def returnError(text2Print ):
+    return ("\033[31;1m" + text2Print + "\033[0m")
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-url', dest='oamUrl', help='URL do OAM', required=True)
@@ -40,12 +48,12 @@ getTokenRequest = {
     'scope': 'primeiro-acesso.insert.credenciais'
 }
 try:
-    print('Pegando o token de acesso')
+    logging.info('Pegando o token de acesso')
     token = requests.post('https://' + args.oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=getTokenRequest, auth=(args.oamTokenUser, args.oamTokenPass), verify=False)
     pass
 except Exception as e:
     raise e
-print('Token recebido')
+logging.info('Token recebido')
 # print(json.loads(token.text)['access_token'])
 
 validateRequest = {
@@ -55,7 +63,7 @@ validateRequest = {
     'assertion': json.loads(token.text)['access_token']
 }
 
-print('Fazendo 100 chamadas de validação...')
+logging.info('Fazendo 100 chamadas de validação...')
 
 if args.oamUrlVal is not None:
     urlValidator = args.oamUrlVal
@@ -67,9 +75,9 @@ while count < 100:
         resultValidator = requests.post('https://' + urlValidator + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=validateRequest, auth=(args.oamValidatorUser, args.oamValidatorPass), verify=False)
         # print(resultValidator.text)
         if json.loads(resultValidator.text)['successful'] == True:
-            printSuccess('Sucesso')
+            logging.info(returnSuccess('Sucesso'))
         else:
-            printError('Erro na validação')
+            logging.error(returnError('Erro na validação'))
         pass
     except Exception as e:
         raise e
