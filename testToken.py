@@ -49,7 +49,7 @@ getTokenRequest = {
 }
 try:
     logging.info('Pegando o token de acesso')
-    token = requests.post('https://' + args.oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=getTokenRequest, auth=(args.oamTokenUser, args.oamTokenPass), verify=False)
+    token = requests.post(args.oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=getTokenRequest, auth=(args.oamTokenUser, args.oamTokenPass), verify=False)
     pass
 except Exception as e:
     raise e
@@ -72,7 +72,7 @@ else:
 count = 0
 while count < 100:
     try:
-        resultValidator = requests.post('https://' + urlValidator + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=validateRequest, auth=(args.oamValidatorUser, args.oamValidatorPass), verify=False)
+        resultValidator = requests.post(urlValidator + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=validateRequest, auth=(args.oamValidatorUser, args.oamValidatorPass), verify=False)
         # print(resultValidator.text)
         if json.loads(resultValidator.text)['successful'] == True:
             logging.info(returnSuccess('Sucesso'))
