@@ -20,7 +20,7 @@ getTokenRequest = {
 	'scope': 'primeiro-acesso.insert.credenciais'
 }
 token = requests.post(oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=getTokenRequest, auth=(args.oamTokenUser, args.oamTokenPass), verify=False)
-print(json.loads(token.text)['access_token'])
+# print(json.loads(token.text)['access_token'])
 
 validateRequest = {
 	'grant_type': 'oracle-idm:/oauth/grant-type/resource-access-token/jwt',
@@ -28,6 +28,10 @@ validateRequest = {
 	'scope': 'primeiro-acesso.insert.credenciais',
 	'assertion': json.loads(token.text)['access_token']
 }
-resultValidator = requests.post(oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=validateRequest, auth=(args.oamValidatorUser, args.oamValidatorPass), verify=False)
 
-print(resultValidator.text)
+count = 0
+while count < 100:
+	resultValidator = requests.post(oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=validateRequest, auth=(args.oamValidatorUser, args.oamValidatorPass), verify=False)
+	print(resultValidator.text)
+	count += 1
+
