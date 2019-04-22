@@ -19,8 +19,14 @@ getTokenRequest = {
 	'scope': 'primeiro-acesso.insert.credenciais'
 }
 token = requests.post(oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=getTokenRequest, auth=(oamTokenUser, oamTokenPass), verify=False)
+print(token.text)
 
-validateRequest = 'grant_type=oracle-idm%3A%2Foauth%2Fgrant-type%2Fresource-access-token%2Fjwt&oracle_token_action=validate&scope=primeiro-acesso.insert.credenciais&assertion=' + token
+validateRequest = {
+	'grant_type': 'oracle-idm%3A%2Foauth%2Fgrant-type%2Fresource-access-token%2Fjwt',
+	'oracle_token_action': 'validate',
+	'scope': 'primeiro-acesso.insert.credenciais',
+	'assertion': token.text
+}
 resultValidator = requests.post(oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=validateRequest, auth=(oamValidatorUser, oamValidatorPass), verify=False)
 
 print(resultValidator.text)
