@@ -3,12 +3,12 @@
 import requests, argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-u', dest='userName', help='user name to auth')
-parser.add_argument('-p', dest='passWord', help='password to auth')
-parser.add_argument('-tu', dest='oamTokenUser', help='oam token user')
-parser.add_argument('-tp', dest='oamTokenPass', help='oam token password')
-parser.add_argument('-vu', dest='oamValidatorUser', help='oam validator user')
-parser.add_argument('-vp', dest='oamValidatorPass', help='oam validator password')
+parser.add_argument('-u', dest='userName', help='user name to auth', required=True)
+parser.add_argument('-p', dest='passWord', help='password to auth', required=True)
+parser.add_argument('-tu', dest='oamTokenUser', help='oam token user', required=True)
+parser.add_argument('-tp', dest='oamTokenPass', help='oam token password', required=True)
+parser.add_argument('-vu', dest='oamValidatorUser', help='oam validator user', required=True)
+parser.add_argument('-vp', dest='oamValidatorPass', help='oam validator password', required=True)
 args = parser.parse_args()
 
 oamUrl = 'https://oam.ppd.veloe.com.br'
