@@ -1,16 +1,25 @@
 #!python
 
-import requests
+import requests, argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-u', dest='userName', help='user name to auth')
+parser.add_argument('-p', dest='passWord', help='password to auth')
+parser.add_argument('-tu', dest='oamTokenUser', help='oam token user')
+parser.add_argument('-tp', dest='oamTokenPass', help='oam token password')
+parser.add_argument('-vu', dest='oamValidatorUser', help='oam validator user')
+parser.add_argument('-vp', dest='oamValidatorPass', help='oam validator password')
+args = parser.parse_args()
 
 oamUrl = 'https://oam.ppd.veloe.com.br'
-userName = '27729523809'
-passWord = 'veloe1010'
+userName = args['userName']
+passWord = args['passWord']
 
-oamTokenUser = 'SistemaPrimeiroAcesso'
-oamTokenPass = 'Iq60Ci6VEqQ7Hjs'
+oamTokenUser = args['oamTokenUser']
+oamTokenPass = args['oamTokenPass']
 
-oamValidatorUser = 'ServiceTokenValidator'
-oamValidatorPass = 'MKnATbMlgeVqBnXH'
+oamValidatorUser = args['oamValidatorUser']
+oamValidatorPass = args['oamValidatorPass']
 
 getTokenRequest = {
 	'grant_type': 'password',
