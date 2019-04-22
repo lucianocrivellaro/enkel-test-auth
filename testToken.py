@@ -15,11 +15,11 @@ class bitColors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-def printSuccess(self, text2Print ):
+def printSuccess(text2Print ):
     print ("\033[32;1m" + text2Print + "\033[0m")
-def printWarning(self, text2Print ):
+def printWarning(text2Print ):
     print ("\033[33;1m" + text2Print + "\033[0m")
-def printError(self, text2Print ):
+def printError(text2Print ):
     print ("\033[31;1m" + text2Print + "\033[0m")
 
 parser = argparse.ArgumentParser()
