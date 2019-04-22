@@ -23,7 +23,7 @@ token = requests.post(oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens',
 print(token.content['access_token'])
 
 validateRequest = {
-	'grant_type': 'oracle-idm%3A%2Foauth%2Fgrant-type%2Fresource-access-token%2Fjwt',
+	'grant_type': 'oracle-idm:/oauth/grant-type/resource-access-token/jwt',
 	'oracle_token_action': 'validate',
 	'scope': 'primeiro-acesso.insert.credenciais',
 	'assertion': token.content['access_token']
