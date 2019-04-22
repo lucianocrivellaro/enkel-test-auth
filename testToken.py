@@ -4,6 +4,7 @@ import requests, argparse, json
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-url', dest='oamUrl', help='URL do OAM', required=True)
+parser.add_argument('-urlValidator', dest='oamUrlVal', help='URL do OAM', required=False)
 parser.add_argument('-u', dest='userName', help='user name to auth', required=True)
 parser.add_argument('-p', dest='passWord', help='password to auth', required=True)
 parser.add_argument('-tu', dest='oamTokenUser', help='oam token user', required=True)
@@ -36,10 +37,14 @@ validateRequest = {
 
 print('Fazendo 100 chamadas de validação...')
 
+if 'oamUrlVal' not in args:
+    urlValidator = args.oamUrl
+else:
+    urlValidator = args.oamUrlVal
 count = 0
 while count < 100:
     try:
-        resultValidator = requests.post('https://' + args.oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=validateRequest, auth=(args.oamValidatorUser, args.oamValidatorPass), verify=False)
+        resultValidator = requests.post('https://' + urlValidator + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=validateRequest, auth=(args.oamValidatorUser, args.oamValidatorPass), verify=False)
         print(resultValidator.text)
         pass
     except Exception as e:
