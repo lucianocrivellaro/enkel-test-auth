@@ -1,6 +1,9 @@
 #!python
 
 import requests, argparse, json
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-url', dest='oamUrl', help='URL do OAM', required=True)
