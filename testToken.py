@@ -20,13 +20,13 @@ getTokenRequest = {
 	'scope': 'primeiro-acesso.insert.credenciais'
 }
 token = requests.post(oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=getTokenRequest, auth=(args.oamTokenUser, args.oamTokenPass), verify=False)
-print(token.content['access_token'])
+print(token.text.json()['access_token'])
 
 validateRequest = {
 	'grant_type': 'oracle-idm:/oauth/grant-type/resource-access-token/jwt',
 	'oracle_token_action': 'validate',
 	'scope': 'primeiro-acesso.insert.credenciais',
-	'assertion': token.content['access_token']
+	'assertion': token.text.json()['access_token']
 }
 resultValidator = requests.post(oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=validateRequest, auth=(args.oamValidatorUser, args.oamValidatorPass), verify=False)
 
