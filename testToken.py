@@ -12,22 +12,14 @@ parser.add_argument('-vp', dest='oamValidatorPass', help='oam validator password
 args = parser.parse_args()
 
 oamUrl = 'https://oam.ppd.veloe.com.br'
-userName = args['userName']
-passWord = args['passWord']
-
-oamTokenUser = args['oamTokenUser']
-oamTokenPass = args['oamTokenPass']
-
-oamValidatorUser = args['oamValidatorUser']
-oamValidatorPass = args['oamValidatorPass']
 
 getTokenRequest = {
 	'grant_type': 'password',
-	'username': userName,
-	'password': passWord,
+	'username': args.userName,
+	'password': args.passWord,
 	'scope': 'primeiro-acesso.insert.credenciais'
 }
-token = requests.post(oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=getTokenRequest, auth=(oamTokenUser, oamTokenPass), verify=False)
+token = requests.post(oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=getTokenRequest, auth=(args.oamTokenUser, args.oamTokenPass), verify=False)
 print(token.text)
 
 validateRequest = {
@@ -36,6 +28,6 @@ validateRequest = {
 	'scope': 'primeiro-acesso.insert.credenciais',
 	'assertion': token.text
 }
-resultValidator = requests.post(oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=validateRequest, auth=(oamValidatorUser, oamValidatorPass), verify=False)
+resultValidator = requests.post(oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=validateRequest, auth=(args.oamValidatorUser, args.oamValidatorPass), verify=False)
 
 print(resultValidator.text)
