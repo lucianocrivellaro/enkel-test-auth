@@ -57,10 +57,10 @@ validateRequest = {
 
 print('Fazendo 100 chamadas de validação...')
 
-if 'oamUrlVal' not in args:
-    urlValidator = args.oamUrl
-else:
+if args.oamUrlVal is not None:
     urlValidator = args.oamUrlVal
+else:
+    urlValidator = args.oamUrl
 count = 0
 while count < 100:
     try:
