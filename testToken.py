@@ -20,7 +20,7 @@ getTokenRequest = {
 	'scope': 'primeiro-acesso.insert.credenciais'
 }
 token = requests.post(oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=getTokenRequest, auth=(args.oamTokenUser, args.oamTokenPass), verify=False)
-print(token.text)
+print(token.content['access_token'])
 
 validateRequest = {
 	'grant_type': 'oracle-idm%3A%2Foauth%2Fgrant-type%2Fresource-access-token%2Fjwt',
