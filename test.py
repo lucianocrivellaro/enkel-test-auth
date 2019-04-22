@@ -22,3 +22,5 @@ token = requests.post(oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens',
 
 validateRequest = 'grant_type=oracle-idm%3A%2Foauth%2Fgrant-type%2Fresource-access-token%2Fjwt&oracle_token_action=validate&scope=primeiro-acesso.insert.credenciais&assertion=' + token
 resultValidator = requests.post(oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=validateRequest, auth=(oamValidatorUser, oamValidatorPass))
+
+print resultValidator.text
