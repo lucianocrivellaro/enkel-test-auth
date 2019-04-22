@@ -5,6 +5,23 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
+class bitColors:
+    HEADER = '\033[1;35m'
+    OKBLUE = '\033[1;34m'
+    OKGREEN = '\033[1;32m'
+    WARNING = '\033[1;33m'
+    FAIL = '\033[1;31m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+def printSuccess(self, text2Print ):
+    print ("\033[32;1m" + text2Print + "\033[0m")
+def printWarning(self, text2Print ):
+    print ("\033[33;1m" + text2Print + "\033[0m")
+def printError(self, text2Print ):
+    print ("\033[31;1m" + text2Print + "\033[0m")
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-url', dest='oamUrl', help='URL do OAM', required=True)
 parser.add_argument('-urlValidator', dest='oamUrlVal', help='URL do OAM', required=False)
@@ -48,7 +65,11 @@ count = 0
 while count < 100:
     try:
         resultValidator = requests.post('https://' + urlValidator + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=validateRequest, auth=(args.oamValidatorUser, args.oamValidatorPass), verify=False)
-        print(resultValidator.text)
+        # print(resultValidator.text)
+        if json.loads(resultValidator.text)['successful'] == True:
+            printSuccess('Sucesso')
+        else:
+            printError('Erro na validação')
         pass
     except Exception as e:
         raise e
