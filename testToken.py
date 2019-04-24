@@ -73,13 +73,15 @@ count = 0
 while count < 100:
     try:
         resultValidator = requests.post(urlValidator + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=validateRequest, auth=(args.oamValidatorUser, args.oamValidatorPass), verify=False)
-        # print(resultValidator.text)
-        if json.loads(resultValidator.text)['successful'] == True:
+        jsonValidator = json.loads(resultValidator.text)
+        if 'successful' in jsonValidator and jsonValidator['successful'] == True:
             logging.info(returnSuccess('Sucesso'))
         else:
+            print(resultValidator.text)
             logging.error(returnError('Erro na validação'))
         pass
     except Exception as e:
+        print(resultValidator.text)
         raise e
     count += 1
 
