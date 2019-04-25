@@ -1,6 +1,6 @@
 #!python
 
-import requests, argparse, json, logging
+import requests, argparse, json, logging, time
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
@@ -39,6 +39,7 @@ parser.add_argument('-tu', dest='oamTokenUser', help='oam token user', required=
 parser.add_argument('-tp', dest='oamTokenPass', help='oam token password', required=True)
 parser.add_argument('-vu', dest='oamValidatorUser', help='oam validator user', required=True)
 parser.add_argument('-vp', dest='oamValidatorPass', help='oam validator password', required=True)
+parser.add_argument('-i', dest='requestInterval', help='intervalo entre gerar o token e a primeira validacao em milisegundos', required=True)
 args = parser.parse_args()
 
 getTokenRequest = {
@@ -62,6 +63,10 @@ validateRequest = {
     'scope': 'primeiro-acesso.insert.credenciais',
     'assertion': json.loads(token.text)['access_token']
 }
+
+logging.info("Iniciando espera para iniciar as chamadas...")
+time.sleep( args.requestInterval / 1000 )
+logging.info("Fim da espera.")
 
 logging.info('Fazendo 100 chamadas de validação...')
 
