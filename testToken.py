@@ -1,6 +1,6 @@
 #!python
 
-import requests, argparse, json, logging, time
+import requests, argparse, json, logging, time, sys
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
@@ -56,13 +56,18 @@ except Exception as e:
     raise e
 logging.info('Token recebido')
 # print(json.loads(token.text)['access_token'])
+jsonToken = json.loads(token.text)
 
-validateRequest = {
-    'grant_type': 'oracle-idm:/oauth/grant-type/resource-access-token/jwt',
-    'oracle_token_action': 'validate',
-    'scope': 'primeiro-acesso.insert.credenciais',
-    'assertion': json.loads(token.text)['access_token']
-}
+if 'access_token' in jsonToken:
+    validateRequest = {
+        'grant_type': 'oracle-idm:/oauth/grant-type/resource-access-token/jwt',
+        'oracle_token_action': 'validate',
+        'scope': 'primeiro-acesso.insert.credenciais',
+        'assertion': jsonToken['access_token']
+    }
+else:
+    logging.error('Não foi possível pegar um token.')
+    sys.exit(100)
 
 logging.info("Iniciando espera para iniciar as chamadas...")
 time.sleep( args.requestInterval / 1000 )
