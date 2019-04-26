@@ -67,6 +67,7 @@ if 'access_token' in jsonToken:
     }
 else:
     logging.error('Não foi possível pegar um token.')
+    logging.info(jsonToken)
     sys.exit(100)
 
 logging.info("Iniciando espera para iniciar as chamadas...")
