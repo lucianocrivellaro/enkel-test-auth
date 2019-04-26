@@ -39,7 +39,7 @@ parser.add_argument('-tu', dest='oamTokenUser', help='oam token user', required=
 parser.add_argument('-tp', dest='oamTokenPass', help='oam token password', required=True)
 parser.add_argument('-vu', dest='oamValidatorUser', help='oam validator user', required=True)
 parser.add_argument('-vp', dest='oamValidatorPass', help='oam validator password', required=True)
-parser.add_argument('-i', dest='requestInterval', help='intervalo entre gerar o token e a primeira validacao em milisegundos', required=True)
+parser.add_argument('-i', dest='requestInterval', help='intervalo entre gerar o token e a primeira validacao em milisegundos', required=True, type=int)
 args = parser.parse_args()
 
 getTokenRequest = {
