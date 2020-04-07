@@ -43,14 +43,15 @@ parser.add_argument('-i', dest='requestInterval', help='intervalo entre gerar o 
 args = parser.parse_args()
 
 getTokenRequest = {
-    'grant_type': 'password',
+    'X-OAUTH-IDENTITY-DOMAIN-NAME':'OauthDomain',
+	'grant_type': 'password',
     'username': args.userName,
     'password': args.passWord,
     'scope': 'primeiro-acesso.insert.credenciais'
 }
 try:
     logging.info('Pegando o token de acesso')
-    token = requests.post(args.oamUrl + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=getTokenRequest, auth=(args.oamTokenUser, args.oamTokenPass), verify=False)
+    token = requests.post(args.oamUrl + '/oauth2/rest/token', data=getTokenRequest, auth=(args.oamTokenUser, args.oamTokenPass), verify=False)
     pass
 except Exception as e:
     raise e
@@ -60,10 +61,11 @@ jsonToken = json.loads(token.text)
 
 if 'access_token' in jsonToken:
     validateRequest = {
-        'grant_type': 'oracle-idm:/oauth/grant-type/resource-access-token/jwt',
-        'oracle_token_action': 'validate',
-        'scope': 'primeiro-acesso.insert.credenciais',
-        'assertion': jsonToken['access_token']
+        # 'grant_type': 'oracle-idm:/oauth/grant-type/resource-access-token/jwt',
+        # 'oracle_token_action': 'validate',
+        'X-OAUTH-IDENTITY-DOMAIN-NAME':'OauthDomain',
+		'scope': 'primeiro-acesso.insert.credenciais',
+        'access_token': jsonToken['access_token']
     }
 else:
     logging.error('Não foi possível pegar um token.')
@@ -83,7 +85,7 @@ else:
 count = 0
 while count < 100:
     try:
-        resultValidator = requests.post(urlValidator + '/ms_oauth/oauth2/endpoints/oauthservice/tokens', data=validateRequest, auth=(args.oamValidatorUser, args.oamValidatorPass), verify=False)
+        resultValidator = requests.post(urlValidator + '/oauth2/rest/token/info?access_token=', data=validateRequest, auth=(args.oamValidatorUser, args.oamValidatorPass), verify=False)
         jsonValidator = json.loads(resultValidator.text)
         if 'successful' in jsonValidator and jsonValidator['successful'] == True:
             logging.info(returnSuccess('Sucesso'))
@@ -95,4 +97,3 @@ while count < 100:
         print(resultValidator.text)
         raise e
     count += 1
-
